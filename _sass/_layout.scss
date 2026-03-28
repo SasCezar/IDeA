@@ -125,21 +125,21 @@
 .site-footer {
   background-color: $color-navy;
   color: rgba(255,255,255,0.6);
-  padding: $spacing-lg 0;
-  margin-top: $spacing-xl;
+  padding: $spacing-sm 0;
+  margin-top: $spacing-lg;
   border-top: 4px solid $color-teal;
 
   .footer-inner {
     display: flex;
     flex-wrap: wrap;
-    gap: $spacing-lg;
+    gap: $spacing-md;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
   }
 
   .footer-brand {
     .logo-text {
-      font-size: $font-size-xl;
+      font-size: $font-size-md;
       font-weight: 700;
       color: $color-white;
 
@@ -147,9 +147,10 @@
     }
 
     p {
-      margin-top: $spacing-xs;
+      margin-top: 0.25rem;
       font-size: $font-size-sm;
       color: rgba(255,255,255,0.5);
+      margin-bottom: 0;
     }
   }
 
@@ -159,14 +160,15 @@
       font-size: $font-size-sm;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: $spacing-sm;
+      margin-bottom: $spacing-xs;
     }
 
     ul {
       list-style: none;
       padding: 0;
+      margin: 0;
 
-      li { margin-bottom: $spacing-xs; }
+      li { margin-bottom: 0.25rem; }
 
       a {
         color: rgba(255,255,255,0.6);
@@ -180,12 +182,243 @@
   }
 
   .footer-bottom {
-    margin-top: $spacing-md;
-    padding-top: $spacing-sm;
+    margin-top: $spacing-sm;
+    padding-top: $spacing-xs;
     border-top: 1px solid rgba(255,255,255,0.1);
     font-size: $font-size-sm;
     color: rgba(255,255,255,0.35);
     text-align: center;
+  }
+}
+
+// Publication page
+.pub-page-meta-top {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-xs;
+}
+
+.pub-page-venue {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: $font-size-md;
+}
+
+.pub-page-title {
+  font-size: $font-size-2xl;
+  line-height: 1.2;
+  margin-bottom: $spacing-xs;
+}
+
+.pub-page-authors {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: $font-size-lg;
+  margin-bottom: 0;
+}
+
+.pub-links-bar {
+  background: $color-gray-100;
+  border-bottom: 1px solid $color-gray-200;
+  padding: $spacing-sm 0;
+
+  .pub-links-bar-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-xs;
+    align-items: center;
+  }
+}
+
+.pub-abstract-box {
+  background: $color-teal-light;
+  border-left: 4px solid $color-teal;
+  border-radius: $border-radius;
+  padding: $spacing-md $spacing-lg;
+  margin-bottom: $spacing-md;
+
+  .pub-abstract-label {
+    font-size: $font-size-sm;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: $color-teal-dark;
+    margin-bottom: $spacing-xs;
+    border: none;
+    padding: 0;
+  }
+
+  p {
+    margin-bottom: 0;
+    line-height: 1.8;
+    color: $color-text;
+  }
+}
+
+.pub-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+// Project page
+.project-page-title-row {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  flex-wrap: wrap;
+}
+
+.project-page-dates {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: $font-size-md;
+  margin-top: $spacing-xs;
+  margin-bottom: 0;
+}
+
+.project-meta-strip {
+  background-color: $color-gray-100;
+  border-bottom: 1px solid $color-gray-200;
+  padding: $spacing-sm 0;
+
+  .project-meta-strip-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-lg;
+    align-items: flex-start;
+  }
+}
+
+.project-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.project-meta-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: $color-text-muted;
+}
+
+.project-meta-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.project-content {
+  max-width: 800px;
+
+  h2 {
+    font-size: $font-size-xl;
+    margin-top: $spacing-lg;
+    margin-bottom: $spacing-sm;
+    padding-bottom: $spacing-xs;
+    border-bottom: 2px solid $color-teal-light;
+
+    &:first-child { margin-top: 0; }
+  }
+
+  h3 {
+    font-size: $font-size-lg;
+    margin-top: $spacing-md;
+  }
+
+  p { line-height: 1.8; }
+
+  pre {
+    background: $color-navy;
+    color: #e2e8f0;
+    padding: $spacing-sm $spacing-md;
+    border-radius: $border-radius;
+    overflow-x: auto;
+    margin-bottom: $spacing-sm;
+    font-family: $font-mono;
+    font-size: $font-size-sm;
+    line-height: 1.6;
+  }
+
+  code {
+    font-family: $font-mono;
+    font-size: 0.9em;
+    background: $color-gray-200;
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  pre code {
+    background: none;
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+  }
+
+  img {
+    border-radius: $border-radius;
+    margin: $spacing-sm 0;
+  }
+
+  blockquote {
+    border-left: 4px solid $color-teal;
+    margin-left: 0;
+    padding-left: $spacing-md;
+    color: $color-text-muted;
+    font-style: italic;
+    margin-bottom: $spacing-sm;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: $spacing-md;
+    font-size: $font-size-sm;
+
+    th, td {
+      padding: $spacing-xs $spacing-sm;
+      border: 1px solid $color-gray-200;
+      text-align: left;
+    }
+
+    th {
+      background-color: $color-teal-light;
+      font-weight: 600;
+      color: $color-navy;
+    }
+
+    tr:nth-child(even) { background-color: $color-gray-100; }
+  }
+
+  ul, ol {
+    li { margin-bottom: 4px; }
+  }
+
+  .mermaid {
+    text-align: center;
+    margin: $spacing-md 0;
+    padding: $spacing-sm;
+    background: $color-gray-100;
+    border-radius: $border-radius;
+    border: 1px solid $color-gray-200;
+  }
+}
+
+// Project card title link
+.project-title a {
+  color: $color-navy;
+  text-decoration: none;
+
+  &:hover { color: $color-teal-dark; text-decoration: underline; }
+}
+
+.project-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    text-decoration: none;
+    color: inherit;
   }
 }
 

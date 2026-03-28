@@ -1,4 +1,5 @@
 @use "variables" as *;
+@use "sass:color";
 
 // Base resets and typography
 
@@ -70,11 +71,13 @@ img {
 }
 
 .section {
-  padding: $spacing-xl 0;
+  padding: 6rem 0;
 }
 
 .section--tinted {
   background-color: $color-teal-light;
+  border-top: 1px solid color.adjust($color-teal-light, $lightness: -6%);
+  border-bottom: 1px solid color.adjust($color-teal-light, $lightness: -6%);
 }
 
 .section-title {

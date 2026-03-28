@@ -7,6 +7,10 @@ role: Professor
 email: jane.doe@example.com
 website: https://janedoe.example.com
 photo:        # /assets/images/people/jane_doe.jpg
+orcid:        # https://orcid.org/0000-0000-0000-0000
+scholar:      # https://scholar.google.com/citations?user=XXXXXXX
+linkedin:     # https://linkedin.com/in/janedoe
+github:       # https://github.com/janedoe
 bio: Researching safe reinforcement learning and human-robot collaboration.
 interests:
   - Reinforcement Learning

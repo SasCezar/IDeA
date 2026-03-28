@@ -1,0 +1,66 @@
+---
+layout: default
+---
+
+<div class="page-header">
+  <div class="container">
+    <div class="pub-page-meta-top">
+      <span class="badge badge--{{ page.type }}">{{ page.type | capitalize }}</span>
+      <span class="pub-page-venue">{{ page.venue }}, {{ page.year }}</span>
+    </div>
+    <h1 class="pub-page-title">{{ page.title }}</h1>
+    <p class="pub-page-authors">{{ page.authors | join: " &middot; " }}</p>
+  </div>
+</div>
+
+<div class="pub-links-bar">
+  <div class="container pub-links-bar-inner">
+    {% if page.doi %}{% assign paper_url = page.doi | prepend: "https://doi.org/" %}{% elsif page.arxiv %}{% assign paper_url = page.arxiv | prepend: "https://arxiv.org/abs/" %}{% elsif page.pdf %}{% assign paper_url = page.pdf %}{% else %}{% assign paper_url = nil %}{% endif %}
+    {% if paper_url %}
+      <a href="{{ paper_url }}" target="_blank" rel="noopener" class="btn btn--primary">
+        <i class="fas fa-file-alt"></i> Paper
+      </a>
+    {% endif %}
+    {% if page.code %}
+      <a href="{{ page.code }}" target="_blank" rel="noopener" class="btn btn--outline">
+        <i class="fab fa-github"></i> Code
+      </a>
+    {% endif %}
+  </div>
+</div>
+
+<section class="section" style="padding-top: 2.5rem;">
+  <div class="container">
+
+    {% if page.abstract %}
+    <div class="pub-abstract-box">
+      <h2 class="pub-abstract-label">Abstract</h2>
+      <p>{{ page.abstract }}</p>
+    </div>
+    {% endif %}
+
+    {% if page.tags %}
+    <div class="pub-tags" style="margin-bottom: 2rem;">
+      {% for tag in page.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
+    </div>
+    {% endif %}
+
+    {% if page.content != blank %}
+    <div class="project-content">
+      {{ content }}
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  document.querySelectorAll('pre code.language-mermaid').forEach(function (el) {
+    var pre = document.createElement('pre');
+    pre.className = 'mermaid';
+    pre.textContent = el.textContent;
+    el.parentNode.replaceWith(pre);
+  });
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>

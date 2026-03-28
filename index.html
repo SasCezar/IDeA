@@ -25,8 +25,8 @@ title: Home
 <div class="stat-strip">
   <div class="container stat-strip-inner">
     {% assign total_people = site.data.people | size %}
-    {% assign total_projects = site.data.projects | size %}
-    {% assign total_pubs = site.data.publications | size %}
+    {% assign total_projects = site.projects | size %}
+    {% assign total_pubs = site.publications | size %}
     <div class="stat-item">
       <div class="stat-number">{{ total_people }}</div>
       <div class="stat-label">Researchers</div>
@@ -55,32 +55,85 @@ title: Home
   </div>
 </section>
 
-<!-- Featured projects -->
-{% assign active_projects = "" | split: "" %}
-{% for proj_hash in site.data.projects %}
-  {% assign proj = proj_hash[1] %}
-  {% if proj.status == "active" %}
-    {% assign active_projects = active_projects | push: proj %}
-  {% endif %}
+<!-- Team -->
+{% assign role_order = "Professor,Associate Professor,Assistant Professor,Postdoc,Research Scientist,PhD Student,Master Student,Visiting Researcher" | split: "," %}
+{% assign current_members = "" | split: "" %}
+{% for role in role_order %}
+  {% for person_hash in site.data.people %}
+    {% assign person = person_hash[1] %}
+    {% if person.role == role and person.former != true %}
+      {% assign current_members = current_members | push: person %}
+    {% endif %}
+  {% endfor %}
 {% endfor %}
 
-{% if active_projects.size > 0 %}
+{% if current_members.size > 0 %}
 <section class="section section--tinted">
+  <div class="container">
+    <h2 class="section-title">Our Team</h2>
+    <div class="team-grid">
+      {% for person in current_members %}
+        <div class="team-card">
+          <div class="team-photo-wrap">
+            {% if person.photo %}
+              <img class="team-photo" src="{{ person.photo }}" alt="{{ person.name }}">
+            {% else %}
+              <div class="team-photo-placeholder">{{ person.name | slice: 0 }}</div>
+            {% endif %}
+          </div>
+          <div class="team-info">
+            <div class="team-name">
+              {% if person.website %}
+                <a href="{{ person.website }}" target="_blank" rel="noopener">{{ person.name }}</a>
+              {% else %}
+                {{ person.name }}
+              {% endif %}
+            </div>
+            <div class="team-role">{{ person.role }}</div>
+            <div class="team-socials">
+              {% if person.email %}<a href="mailto:{{ person.email }}" title="Email"><i class="fas fa-envelope"></i></a>{% endif %}
+              {% if person.orcid %}<a href="{{ person.orcid }}" target="_blank" rel="noopener" title="ORCID"><i class="ai ai-orcid"></i></a>{% endif %}
+              {% if person.scholar %}<a href="{{ person.scholar }}" target="_blank" rel="noopener" title="Google Scholar"><i class="ai ai-google-scholar"></i></a>{% endif %}
+              {% if person.linkedin %}<a href="{{ person.linkedin }}" target="_blank" rel="noopener" title="LinkedIn"><i class="fab fa-linkedin"></i></a>{% endif %}
+              {% if person.github %}<a href="{{ person.github }}" target="_blank" rel="noopener" title="GitHub"><i class="fab fa-github"></i></a>{% endif %}
+              {% if person.twitter %}<a href="{{ person.twitter }}" target="_blank" rel="noopener" title="Twitter / X"><i class="fab fa-x-twitter"></i></a>{% endif %}
+              {% if person.website %}<a href="{{ person.website }}" target="_blank" rel="noopener" title="Website"><i class="fas fa-globe"></i></a>{% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <p style="margin-top:1.5rem;">
+      <a href="{{ '/people/' | relative_url }}" class="btn btn--outline">Meet the full team &rarr;</a>
+    </p>
+  </div>
+</section>
+{% endif %}
+
+<!-- Featured projects -->
+{% assign active_projects = site.projects | where: "status", "active" %}
+
+{% if active_projects.size > 0 %}
+<section class="section">
   <div class="container">
     <h2 class="section-title">Active Projects</h2>
     <div class="projects-grid">
       {% for proj in active_projects limit:3 %}
         <div class="project-card">
-          <div class="project-image-wrap">
-            {% if proj.image %}
-              <img class="project-image" src="{{ proj.image }}" alt="{{ proj.title }}">
-            {% else %}
-              <div class="project-image-placeholder">&#128300;</div>
-            {% endif %}
-          </div>
+          <a class="project-card-link" href="{{ proj.url | relative_url }}">
+            <div class="project-image-wrap">
+              {% if proj.image %}
+                <img class="project-image" src="{{ proj.image }}" alt="{{ proj.title }}">
+              {% else %}
+                <div class="project-image-placeholder">&#128300;</div>
+              {% endif %}
+            </div>
+          </a>
           <div class="project-body">
             <div class="project-header">
-              <h3 class="project-title">{{ proj.title }}</h3>
+              <h3 class="project-title">
+                <a href="{{ proj.url | relative_url }}">{{ proj.title }}</a>
+              </h3>
               <span class="badge badge--active">Active</span>
             </div>
             <p class="project-description">{{ proj.description }}</p>
@@ -89,6 +142,11 @@ title: Home
                 <span class="tag">{{ tag }}</span>
               {% endfor %}
             </div>
+            {% if proj.content.size > 5 %}
+            <div class="project-readmore">
+              <a href="{{ proj.url | relative_url }}">Read more &rarr;</a>
+            </div>
+            {% endif %}
           </div>
         </div>
       {% endfor %}
@@ -101,14 +159,10 @@ title: Home
 {% endif %}
 
 <!-- Recent publications -->
-{% assign all_pubs = "" | split: "" %}
-{% for pub_hash in site.data.publications %}
-  {% assign all_pubs = all_pubs | push: pub_hash[1] %}
-{% endfor %}
-{% assign recent_pubs = all_pubs | sort: "year" | reverse %}
+{% assign recent_pubs = site.publications | sort: "year" | reverse %}
 
 {% if recent_pubs.size > 0 %}
-<section class="section">
+<section class="section section--tinted">
   <div class="container">
     <h2 class="section-title">Recent Publications</h2>
     <div class="publications-year-group">
@@ -119,17 +173,15 @@ title: Home
           </div>
           <div class="pub-body">
             <div class="pub-title">
-              {% if pub.pdf %}
-                <a href="{{ pub.pdf }}" target="_blank" rel="noopener">{{ pub.title }}</a>
-              {% else %}
-                {{ pub.title }}
-              {% endif %}
+              <a href="{{ pub.url | relative_url }}">{{ pub.title }}</a>
             </div>
             <div class="pub-authors">{{ pub.authors | join: ", " }}</div>
             <div class="pub-venue">{{ pub.venue }}, {{ pub.year }}</div>
             <div class="pub-links">
-              {% if pub.pdf %}<a href="{{ pub.pdf }}" target="_blank">&#128196; PDF</a>{% endif %}
-              {% if pub.code %}<a href="{{ pub.code }}" target="_blank">&#128187; Code</a>{% endif %}
+              {% if pub.doi %}{% assign paper_url = pub.doi | prepend: "https://doi.org/" %}{% elsif pub.arxiv %}{% assign paper_url = pub.arxiv | prepend: "https://arxiv.org/abs/" %}{% elsif pub.pdf %}{% assign paper_url = pub.pdf %}{% else %}{% assign paper_url = nil %}{% endif %}
+              {% if paper_url %}<a href="{{ paper_url }}" target="_blank" rel="noopener" title="Paper"><i class="fas fa-file-alt"></i> Paper</a>{% endif %}
+              {% if pub.code %}<a href="{{ pub.code }}" target="_blank" rel="noopener" title="Code"><i class="fab fa-github"></i> Code</a>{% endif %}
+              {% if pub.content.size > 5 %}<a href="{{ pub.url | relative_url }}">More info &rarr;</a>{% endif %}
             </div>
           </div>
         </div>

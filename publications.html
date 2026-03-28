@@ -15,12 +15,7 @@ permalink: /publications/
 <section class="section">
   <div class="container">
 
-    {% comment %} Collect all publications and sort by year descending {% endcomment %}
-    {% assign all_pubs = "" | split: "" %}
-    {% for pub_hash in site.data.publications %}
-      {% assign all_pubs = all_pubs | push: pub_hash[1] %}
-    {% endfor %}
-    {% assign sorted_pubs = all_pubs | sort: "year" | reverse %}
+    {% assign sorted_pubs = site.publications | sort: "year" | reverse %}
 
     {% comment %} Get unique years {% endcomment %}
     {% assign years = "" | split: "" %}
@@ -41,11 +36,7 @@ permalink: /publications/
               </div>
               <div class="pub-body">
                 <div class="pub-title">
-                  {% if pub.pdf %}
-                    <a href="{{ pub.pdf }}" target="_blank" rel="noopener">{{ pub.title }}</a>
-                  {% else %}
-                    {{ pub.title }}
-                  {% endif %}
+                  <a href="{{ pub.url | relative_url }}">{{ pub.title }}</a>
                 </div>
                 <div class="pub-authors">{{ pub.authors | join: ", " }}</div>
                 <div class="pub-venue">{{ pub.venue }}</div>
@@ -57,17 +48,15 @@ permalink: /publications/
                   </div>
                 {% endif %}
                 <div class="pub-links">
-                  {% if pub.pdf %}
-                    <a href="{{ pub.pdf }}" target="_blank" rel="noopener">&#128196; PDF</a>
+                  {% if pub.doi %}{% assign paper_url = pub.doi | prepend: "https://doi.org/" %}{% elsif pub.arxiv %}{% assign paper_url = pub.arxiv | prepend: "https://arxiv.org/abs/" %}{% elsif pub.pdf %}{% assign paper_url = pub.pdf %}{% else %}{% assign paper_url = nil %}{% endif %}
+                  {% if paper_url %}
+                    <a href="{{ paper_url }}" target="_blank" rel="noopener" title="Paper"><i class="fas fa-file-alt"></i> Paper</a>
                   {% endif %}
                   {% if pub.code %}
-                    <a href="{{ pub.code }}" target="_blank" rel="noopener">&#128187; Code</a>
+                    <a href="{{ pub.code }}" target="_blank" rel="noopener" title="Code"><i class="fab fa-github"></i> Code</a>
                   {% endif %}
-                  {% if pub.abstract %}
-                    <details style="display:inline;">
-                      <summary style="cursor:pointer; font-size:0.875rem; color:#3aa8bb;">&#128214; Abstract</summary>
-                      <p style="margin-top:6px; font-size:0.875rem; color:#6b7280; max-width:680px;">{{ pub.abstract }}</p>
-                    </details>
+                  {% if pub.content.size > 5 %}
+                    <a href="{{ pub.url | relative_url }}">More info &rarr;</a>
                   {% endif %}
                 </div>
               </div>

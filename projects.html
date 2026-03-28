@@ -22,24 +22,24 @@ permalink: /projects/
     </div>
 
     <div class="projects-grid" id="projects-grid">
-      {% assign all_projects = "" | split: "" %}
-      {% for proj_hash in site.data.projects %}
-        {% assign all_projects = all_projects | push: proj_hash[1] %}
-      {% endfor %}
-      {% assign sorted_projects = all_projects | sort: "start" | reverse %}
+      {% assign sorted_projects = site.projects | sort: "start" | reverse %}
 
       {% for proj in sorted_projects %}
         <div class="project-card" data-status="{{ proj.status }}">
-          <div class="project-image-wrap">
-            {% if proj.image %}
-              <img class="project-image" src="{{ proj.image }}" alt="{{ proj.title }}">
-            {% else %}
-              <div class="project-image-placeholder">&#128300;</div>
-            {% endif %}
-          </div>
+          <a class="project-card-link" href="{{ proj.url | relative_url }}">
+            <div class="project-image-wrap">
+              {% if proj.image %}
+                <img class="project-image" src="{{ proj.image }}" alt="{{ proj.title }}">
+              {% else %}
+                <div class="project-image-placeholder">&#128300;</div>
+              {% endif %}
+            </div>
+          </a>
           <div class="project-body">
             <div class="project-header">
-              <h3 class="project-title">{{ proj.title }}</h3>
+              <h3 class="project-title">
+                <a href="{{ proj.url | relative_url }}">{{ proj.title }}</a>
+              </h3>
               <span class="badge badge--{{ proj.status }}">{{ proj.status | capitalize }}</span>
             </div>
             <p class="project-description">{{ proj.description }}</p>
@@ -59,6 +59,11 @@ permalink: /projects/
                 {{ proj.start }}{% if proj.end %}&ndash;{{ proj.end }}{% else %}&ndash;present{% endif %}
               </span>
             </div>
+            {% if proj.content.size > 5 %}
+            <div class="project-readmore">
+              <a href="{{ proj.url | relative_url }}">Read more &rarr;</a>
+            </div>
+            {% endif %}
           </div>
         </div>
       {% endfor %}

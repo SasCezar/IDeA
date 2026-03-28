@@ -1,0 +1,61 @@
+---
+layout: default
+---
+
+<div class="page-header">
+  <div class="container">
+    <div class="project-page-title-row">
+      <h1>{{ page.title }}</h1>
+      <span class="badge badge--{{ page.status }}">{{ page.status | capitalize }}</span>
+    </div>
+    <p class="project-page-dates">
+      {{ page.start }}{% if page.end %} &ndash; {{ page.end }}{% else %} &ndash; present{% endif %}
+    </p>
+  </div>
+</div>
+
+<div class="project-meta-strip">
+  <div class="container project-meta-strip-inner">
+    {% if page.tags %}
+    <div class="project-meta-item">
+      <span class="project-meta-label">Topics</span>
+      <div class="project-meta-tags">
+        {% for tag in page.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    {% if page.members %}
+    <div class="project-meta-item">
+      <span class="project-meta-label">Team</span>
+      <span>{{ page.members | join: ", " }}</span>
+    </div>
+    {% endif %}
+    {% if page.funding %}
+    <div class="project-meta-item">
+      <span class="project-meta-label">Funding</span>
+      <span>{{ page.funding }}</span>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<section class="section" style="padding-top: 2.5rem;">
+  <div class="container">
+    <div class="project-content">
+      {{ content }}
+    </div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  // Kramdown renders ```mermaid as <pre><code class="language-mermaid">
+  // Replace each such <pre> with <pre class="mermaid"> for Mermaid to pick up
+  document.querySelectorAll('pre code.language-mermaid').forEach(function (el) {
+    var pre = document.createElement('pre');
+    pre.className = 'mermaid';
+    pre.textContent = el.textContent;
+    el.parentNode.replaceWith(pre);
+  });
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
